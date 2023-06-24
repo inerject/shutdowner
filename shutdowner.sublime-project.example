@@ -1,0 +1,33 @@
+{
+  "folders": [
+    {
+      "path": ".",
+      "name": "shutdowner",
+      "file_exclude_patterns": [
+        "*.sublime-workspace",
+      ],
+      "folder_exclude_patterns": [
+        "build",
+        "dist",
+        "venv",
+        "__pycache__",
+      ],
+    },
+  ],
+  "settings": {
+    "tab_size": 4,
+    "default_line_ending": "unix",
+
+    // Anaconda
+    "python_interpreter": "$project_path/venv/Scripts/python",
+  },
+  "build_systems":
+  [
+    {
+      "file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
+      "name": "Anaconda Python Builder",
+      "selector": "source.python",
+      "shell_cmd": "\"<proj_path>/venv/Scripts/python\" -u \"$file\"",
+    },
+  ],
+}
