@@ -7,6 +7,8 @@ import subprocess
 import PyInstaller.__main__
 import jinja2
 
+from version import Version
+
 
 DIST_PATH = '../dist'
 BUILD_PATH = '../build'
@@ -14,6 +16,8 @@ APP_ICO_PATH = 'icons/shutdowner.ico'
 RESOURCES_DIRS = ['icons']
 ISS_SCRIPT_PATH = '../shutdowner.iss'
 ISS_SCRIPT_TMPL_PATH = f'{ISS_SCRIPT_PATH}.tmpl'
+
+ver = Version('../VERSION')
 
 
 def build_exe_with_pyinstaller():
@@ -58,7 +62,7 @@ def prepare_iss_from_tmpl():
 
     iss_config = {
         'app_name': 'shutdowner',
-        'app_ver': '0.0.2',
+        'app_ver': str(ver),
         'app_guid': '{84CE7496-1B5B-4CE1-A5D2-9C126ACB1CA1}',
         'app_ico': Path(APP_ICO_PATH).resolve(),
     }
@@ -99,9 +103,9 @@ def generate_ico_from_image(image_path):
 
 
 if __name__ == '__main__':
-    logging.basicConfig(
-        level=logging.INFO,
-    )
+    # ver.inc_patch()
+    # ver.inc_minor()
+    # ver.inc_major()
 
     build_exe_with_pyinstaller()
     prepare_iss_from_tmpl()
