@@ -10,7 +10,6 @@ import jinja2
 
 DIST_PATH = '../dist'
 BUILD_PATH = '../build'
-APP_PNG_PATH = 'icons/shutdowner.png'
 APP_ICO_PATH = 'icons/shutdowner.ico'
 RESOURCES_DIRS = ['icons']
 ISS_SCRIPT_PATH = '../shutdowner.iss'
@@ -28,7 +27,7 @@ def build_exe_with_pyinstaller():
         '--workpath', BUILD_PATH,
         '--clean',
         '--windowed',
-        '--icon', APP_PNG_PATH,
+        '--icon', APP_ICO_PATH,
         # '--log-level', 'WARN',
     ]
 

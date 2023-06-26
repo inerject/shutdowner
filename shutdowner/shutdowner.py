@@ -45,7 +45,7 @@ class Shutdowner(QWidget):
     def initializeUI(self):
         self.setFixedSize(400, 140)
         self.setWindowTitle("Shutdowner")
-        self.setWindowIcon(QIcon("icons/shutdowner.png"))
+        self.setWindowIcon(QIcon("icons/shutdowner.ico"))
 
         self.setUpMainWindow()
 
