@@ -1,6 +1,7 @@
 #define MyAppName "[{{app_name}}]"
 #define MyAppVersion "[{{app_ver}}]"
 #define MyAppExeName "[{{app_name}}].exe"
+#define Dist "[{{dist}}]"
 
 [Setup]
 AppId={[{{app_guid}}]
@@ -11,7 +12,7 @@ DefaultDirName={autopf}\{#MyAppName}
 DisableProgramGroupPage=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 ;PrivilegesRequired=lowest
-OutputDir=.\dist
+OutputDir={#Dist}
 OutputBaseFilename={#MyAppName}_setup__{#MyAppVersion}
 SetupIconFile=[{{app_ico}}]
 Compression=lzma
@@ -27,8 +28,8 @@ Name: "ukrainian"; MessagesFile: "compiler:Languages\Ukrainian.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: ".\dist\{#MyAppName}\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\dist\{#MyAppName}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#Dist}\{#MyAppName}\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#Dist}\{#MyAppName}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

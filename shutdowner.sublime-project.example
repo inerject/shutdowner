@@ -21,48 +21,58 @@
     // Anaconda
     "python_interpreter": "$project_path/venv/Scripts/python",
   },
-  "build_systems": [
-    {
-      "name": "venv Python",
-      "shell": true,
-      "working_dir": "$project_path",
-      "variants": [
-        {
-          "name": "Build",
-          "file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
-          "selector": "source.python",
-          "cmd": [
-            "$project_path/venv/Scripts/python", "-u", "$file"
-          ],
-        },
-        {
-          "name": "Patch",
-          "cmd": [
-            "$project_path/venv/Scripts/python", "-u",
-            "$project_path/$project_base_name/version.py",
-            "--patch",
-            "-g", "$project_path/$project_base_name/app_ver.py",
-          ],
-        },
-        {
-          "name": "Minor",
-          "cmd": [
-            "$project_path/venv/Scripts/python", "-u",
-            "$project_path/$project_base_name/version.py",
-            "--minor",
-            "-g", "$project_path/$project_base_name/app_ver.py",
-          ],
-        },
-        {
-          "name": "Major",
-          "cmd": [
-            "$project_path/venv/Scripts/python", "-u",
-            "$project_path/$project_base_name/version.py",
-            "--major",
-            "-g", "$project_path/$project_base_name/app_ver.py",
-          ],
-        },
-      ],
-    },
-  ],
+  "build_systems": [{
+    "name": "venv Python",
+    "shell": true,
+    "working_dir": "$project_path",
+    "variants": [
+      {
+        "name": "Build",
+        "file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
+        "selector": "source.python",
+        "cmd": [
+          "$project_path/venv/Scripts/python", "-u", "$file"
+        ],
+      },
+      {
+        "name": "Patch",
+        "cmd": [
+          "$project_path/venv/Scripts/python", "-u",
+          "$project_path/$project_base_name/version.py",
+          "--patch",
+          "-g", "$project_path/$project_base_name/app_ver.py",
+        ],
+      },
+      {
+        "name": "Minor",
+        "cmd": [
+          "$project_path/venv/Scripts/python", "-u",
+          "$project_path/$project_base_name/version.py",
+          "--minor",
+          "-g", "$project_path/$project_base_name/app_ver.py",
+        ],
+      },
+      {
+        "name": "Major",
+        "cmd": [
+          "$project_path/venv/Scripts/python", "-u",
+          "$project_path/$project_base_name/version.py",
+          "--major",
+          "-g", "$project_path/$project_base_name/app_ver.py",
+        ],
+      },
+      {
+        "name": "Release",
+        "cmd": [
+          "$project_path/venv/Scripts/python", "-u",
+          "$project_path/$project_base_name/build_exe.py",
+          "--target", "$project_path/$project_base_name/$project_base_name.py",
+          "--app-name", "$project_base_name",
+          "--icon", "$project_path/$project_base_name/icons/$project_base_name.ico",
+          "--resource-dirs", "$project_path/$project_base_name/icons",
+          "--app-guid", "{84CE7496-1B5B-4CE1-A5D2-9C126ACB1CA1}"
+        ],
+      },
+    ],
+  }],
 }
