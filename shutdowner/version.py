@@ -2,6 +2,8 @@ import sys
 import logging
 from pathlib import Path
 
+import jinja2
+
 
 class Version:
     def __init__(self, path):
@@ -28,6 +30,7 @@ class Version:
 
         except Exception:
             self.repr = 'undefined'
+            self.major, self.minor, self.patch = None, None, None
 
         return self.repr
 
@@ -56,6 +59,32 @@ class Version:
         self.patch = 0
         self.set(self.major, self.minor, self.patch)
 
+    def generate_app_ver_py(
+        self,
+        result_path,
+        tmpl_path=(Path(__file__).parent / 'templates/app_ver.py.tmpl'),
+    ):
+        result_path = Path(result_path).resolve()
+        logging.info(f'Generating {result_path}...')
+
+        app_ver_py_config = {
+            'app_ver': self.get(),
+            'major': self.major,
+            'minor': self.minor,
+            'patch': self.patch,
+        }
+
+        tmpl_path = Path(tmpl_path)
+        env = jinja2.Environment(
+            loader=jinja2.FileSystemLoader(tmpl_path.parent),
+            keep_trailing_newline=True,
+        )
+        template = env.get_template(tmpl_path.name)
+        with open(result_path, 'w') as f:
+            f.write(template.render(app_ver_py_config))
+
+        logging.info(f'{result_path} successfully generated!')
+
     def _check(self):
         if self.get() == 'undefined':
             raise ValueError('Version-file is undefined!')
@@ -76,7 +105,11 @@ if __name__ == '__main__':
 
     parser.add_argument(
         'file', nargs='?', default='VERSION',
-        help='Version-file path. "VERSION" by default')
+        help='Version-file path. "VERSION" by default.')
+    parser.add_argument(
+        '-g', '--gen-py', default="app_ver.py",
+        help="""Generated py-file path. "app_ver.py" by default.
+            Pass "skip" for skipping py-file generation.""")
     parser.add_argument(
         '-p', '--patch', action='store_true',
         help='inc patch')
@@ -126,3 +159,6 @@ if __name__ == '__main__':
         ver.inc_major()
 
     logging.info(f'{input_ver_repr} -> {ver}')
+
+    if args.gen_py != 'skip':
+        ver.generate_app_ver_py(args.gen_py)
