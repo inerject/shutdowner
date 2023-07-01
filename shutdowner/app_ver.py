@@ -82,7 +82,10 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(
         prog='version',
-        description='Managing app version in "major.minor.patch" format.',
+        description="""Managing version-file in format:
+            "__version__ = '<M>.<m>.<p>'\\n".
+            With no specified arguments [-p] [-m] [-M] [-r],
+            it returns __version__ value.""",
     )
 
     parser.add_argument(
@@ -128,8 +131,8 @@ if __name__ == '__main__':
         opt_counter += 1
 
     if opt_counter == 0:
-        parser.print_help()
-        sys.exit(1)
+        print(ver)
+        sys.exit()
     elif opt_counter != 1:
         logging.error(f'Select strictly one option! Curr version: {ver}')
         sys.exit(1)
