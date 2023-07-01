@@ -38,27 +38,30 @@
         "name": "Patch",
         "cmd": [
           "$project_path/venv/Scripts/python", "-u",
-          "$project_path/$project_base_name/version.py",
+          "$project_path/$project_base_name/app_ver.py",
           "--patch",
-          "-g", "$project_path/$project_base_name/app_ver.py",
+          "--newline", "unix",
+          "$project_path/$project_base_name/_version.py",
         ],
       },
       {
         "name": "Minor",
         "cmd": [
           "$project_path/venv/Scripts/python", "-u",
-          "$project_path/$project_base_name/version.py",
+          "$project_path/$project_base_name/app_ver.py",
           "--minor",
-          "-g", "$project_path/$project_base_name/app_ver.py",
+          "--newline", "unix",
+          "$project_path/$project_base_name/_version.py",
         ],
       },
       {
         "name": "Major",
         "cmd": [
           "$project_path/venv/Scripts/python", "-u",
-          "$project_path/$project_base_name/version.py",
+          "$project_path/$project_base_name/app_ver.py",
           "--major",
-          "-g", "$project_path/$project_base_name/app_ver.py",
+          "--newline", "unix",
+          "$project_path/$project_base_name/_version.py",
         ],
       },
       {

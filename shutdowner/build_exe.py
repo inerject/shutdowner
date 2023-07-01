@@ -6,7 +6,7 @@ import subprocess
 import PyInstaller.__main__
 import jinja2
 
-from app_ver import APP_VER
+from _version import __version__
 
 
 def clean_dist(dist):
@@ -168,6 +168,6 @@ if __name__ == '__main__':
         args.pyinst_extra_flags, args.resource_dirs)
 
     if not args.app_ver:
-        args.app_ver = APP_VER.str  # todo
+        args.app_ver = __version__
     generate_iss(args.app_name, args.icon, args.dist, args.app_ver, args.app_guid)
     build_setup(args.app_name)
