@@ -35,8 +35,7 @@ def clean_dist(dist):
 
 def build_exe(
     target, app_name, icon, dist, build,
-    pyinst_extra_flags: list = None,
-    resource_dirs: list = None,
+    res_dirs: list = None, pyinst_flags: list = None,
 ):
     logging.info(f'Building exe with PyInstaller...')
 
@@ -48,11 +47,11 @@ def build_exe(
         '--workpath', str(Path(build).resolve()),
     ]
 
-    if pyinst_extra_flags:
-        args.extend([f'--{it}' for it in pyinst_extra_flags])
+    if pyinst_flags:
+        args.extend([f'--{it}' for it in pyinst_flags])
 
-    if resource_dirs:
-        for directory in resource_dirs:
+    if res_dirs:
+        for directory in res_dirs:
             directory_path = Path(directory).resolve()
             if not directory_path.is_dir():
                 raise FileNotFoundError(
@@ -62,16 +61,16 @@ def build_exe(
     PyInstaller.__main__.run(args)
 
 
-def generate_iss(app_name, icon, dist, app_ver, app_guid):
+def generate_iss(app_name, icon, app_guid, app_ver, dist):
     iss_path = Path(f'{app_name}.iss').resolve()
     logging.info(f'Generating "{iss_path}" file...')
 
     iss_config = {
         'app_name': app_name,
         'app_ico': str(Path(icon).resolve()),
-        'dist': str(Path(dist).resolve()),
-        'app_ver': app_ver,
         'app_guid': app_guid,
+        'app_ver': app_ver,
+        'dist': str(Path(dist).resolve()),
     }
 
     tmpl_path = Path(__file__).parent / 'templates/iss.tmpl'
@@ -123,11 +122,6 @@ if __name__ == '__main__':
             a setup file with Inno Setup (https://jrsoftware.org/isdl.php#stable).""",
     )
 
-    default_pyinst_extra_flags = [
-        'windowed',
-        'clean',
-    ]
-
     parser.add_argument(
         '-t', '--target', required=True, help='target python script')
     parser.add_argument(
@@ -135,39 +129,45 @@ if __name__ == '__main__':
     parser.add_argument(
         '-i', '--icon', required=True, help='application icon')
     parser.add_argument(
-        '--dist', default='dist',
+        '-g', '--app-guid', required=True, help='application GUID')
+    parser.add_argument(
+        '-v', '--app-ver', help='application version',
+        # required=True,
+    )
+
+    parser.add_argument(
+        '-r', '--res-dir', action="extend", nargs=1,
+        help="""Directory with additional files to be added to the executable.
+            Multiple definitions are allowed.""")
+    parser.add_argument(
+        '-f', '--pyinst-flag', action="extend", nargs=1,
+        help=f"""FLAG-argument (without "--" prefix) for PyInstaller.
+            Multiple definitions are allowed.
+            Example: "... -f windowed -f clean ..." will pass "--windowed"
+            and "--clean" flags to PyInstaller during application bundling.""")
+
+    parser.add_argument(
+        '--dist-dir', default='dist',
         help='Distribution directory path. "dist" byte default.')
     parser.add_argument(
-        '--build', default='build',
+        '--build-dir', default='build',
         help='Where PyInstaller put all the temporary work files. "build" by default.')
-    parser.add_argument(
-        '--pyinst-extra-flags', nargs='*', default=default_pyinst_extra_flags,
-        help=f"""Extra FLAG-arguments (without "--" prefix) for PyInstaller.
-            Example: ... --pyinst-extra windowed clean ..." will pass "--windowed"
-            and "--clean" flags to PyInstaller during application bundling.
-            "{' '.join(default_pyinst_extra_flags)}" by default.""")
-    parser.add_argument(
-        '--resource-dirs', nargs='*',
-        help="Directories with additional files to be added to the executable.")
     parser.add_argument(
         '--no-clean-dist', action='store_true',
         help='cancel cleaning dist directory before building')
-    parser.add_argument(
-        '-v', '--app-ver', help='application version')
-    parser.add_argument(
-        '--app-guid', required=True, help='application GUID')
 
     args = parser.parse_args()
 
     #
     if not args.no_clean_dist:
-        clean_dist(args.dist)
+        clean_dist(args.dist_dir)
 
     build_exe(
-        args.target, args.app_name, args.icon, args.dist, args.build,
-        args.pyinst_extra_flags, args.resource_dirs)
+        args.target, args.app_name, args.icon, args.dist_dir, args.build_dir,
+        args.res_dir, args.pyinst_flag)
 
     if not args.app_ver:
         args.app_ver = __version__
-    generate_iss(args.app_name, args.icon, args.dist, args.app_ver, args.app_guid)
+
+    generate_iss(args.app_name, args.icon, args.app_guid, args.app_ver, args.dist_dir)
     build_setup(args.app_name)

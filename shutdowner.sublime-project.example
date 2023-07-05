@@ -70,8 +70,10 @@
           "--target", "$project_path/$project_base_name/$project_base_name.py",
           "--app-name", "$project_base_name",
           "--icon", "$project_path/$project_base_name/icons/$project_base_name.ico",
-          "--resource-dirs", "$project_path/$project_base_name/icons",
-          "--app-guid", "{84CE7496-1B5B-4CE1-A5D2-9C126ACB1CA1}"
+          "--app-guid", "{84CE7496-1B5B-4CE1-A5D2-9C126ACB1CA1}",
+          "--res-dir", "$project_path/$project_base_name/icons",
+          "--pyinst-flag", "windowed",
+          "--pyinst-flag", "clean",
         ],
       },
     ],
