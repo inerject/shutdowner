@@ -1,7 +1,7 @@
 from pathlib import Path
 
 
-def make_abs_path(relative_path):
+def abs_path(relative_path):
     return (Path(__file__).parent / relative_path).resolve()
 
 
@@ -27,14 +27,11 @@ if __name__ == '__main__':
 
     app_name = 'shutdowner'
     bundler_config = {
-        'target': make_abs_path('shutdowner.py'),
-        'app_name': 'shutdowner',
-        'icon': make_abs_path('icons/shutdowner.ico'),
+        'target': abs_path('shutdowner.py'),
+        'icon': abs_path('icons/shutdowner.ico'),
         'app_guid': '{84CE7496-1B5B-4CE1-A5D2-9C126ACB1CA1}',
         'app_ver': __version__,
-        'dist': make_abs_path('../dist'),
-        'build': make_abs_path('../build'),
-        'res_dirs': [make_abs_path('icons')],
+        'res_dirs': [abs_path('icons')],
         'pyinst_flags': ['windowed', 'clean'],
     }
 
