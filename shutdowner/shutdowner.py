@@ -2,6 +2,7 @@ import sys
 import time
 import subprocess
 import ctypes
+from res import str_abs_path
 
 from PyQt6.QtWidgets import (
     QApplication,
@@ -45,7 +46,7 @@ class Shutdowner(QWidget):
     def initializeUI(self):
         self.setFixedSize(400, 140)
         self.setWindowTitle("Shutdowner")
-        self.setWindowIcon(QIcon("icons/shutdowner.ico"))
+        self.setWindowIcon(QIcon(str_abs_path("icons/shutdowner.ico")))
 
         self.setUpMainWindow()
 

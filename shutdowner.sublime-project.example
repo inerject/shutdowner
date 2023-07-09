@@ -68,6 +68,7 @@
         "cmd": [
           "$project_path/venv/Scripts/python", "-u",
           "$project_path/$project_base_name/build_exe.py",
+          // "--only-exe",
         ],
       },
     ],
