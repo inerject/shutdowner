@@ -228,6 +228,10 @@ class ShortcutsCatcher(QObject):
                 "keys": [Qt.Key.Key_R, 1050],
                 "trig": main_wnd.toggleRestart,
             },
+            {
+                "keys": [Qt.Key.Key_Escape],
+                "trig": main_wnd.close,
+            }
         ]
 
     def eventFilter(self, obj, event):
